@@ -1,8 +1,9 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { AppParamList } from './AppParamList';
-import { Center } from './Center';
-import { Text } from 'react-native'
+import { Ionicons, AntDesign, EvilIcons } from '@expo/vector-icons';
+import { HomeStack } from './HomeStack';
+import { SearchStack } from './SearchStack';
 
 interface AppTabsProps {
 
@@ -10,27 +11,34 @@ interface AppTabsProps {
 
 const Tabs = createBottomTabNavigator<AppParamList>()
 
-const Home = () => {
-  return (
-    <Center>
-      <Text>home</Text>
-    </Center>
-  )
-}
-
-const Search = () => {
-  return (
-    <Center>
-      <Text>search</Text>
-    </Center>
-  )
-}
-
 export const AppTabs: React.FC<AppTabsProps> = ({ }) => {
   return (
-    <Tabs.Navigator>
-      <Tabs.Screen name='Home' component={Home} />
-      <Tabs.Screen name='Search' component={Search} />
+    <Tabs.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color, size }) => {
+          let iconName: string = '';
+
+          if (route.name === 'Home') {
+            return <AntDesign name="home" size={size} color={color} />
+          } else if (route.name === 'Search') {
+            return <EvilIcons name="search" size={24} color="black" />
+          }
+
+          // You can return any component that you like here!
+          return <Ionicons
+            name={iconName}
+            size={size}
+            color={color}
+          />;
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: 'tomato',
+        inactiveTintColor: 'gray',
+      }}
+    >
+      <Tabs.Screen name='Home' component={HomeStack} />
+      <Tabs.Screen name='Search' component={SearchStack} />
     </Tabs.Navigator>
   );
 }
